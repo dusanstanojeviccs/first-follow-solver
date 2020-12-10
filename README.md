@@ -31,3 +31,4 @@ let problem = {
 console.log("Solution", FirstFollowSolver.solve(problem));
 ```
 
+### I have not had the time to write all test cases yet, if you add some use cases feel free to open a PR and email me at dusan.stanojevic.cs@gmail.com
