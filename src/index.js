@@ -208,7 +208,7 @@ function addNext(followSet, firstSet, key, rhs, i) {
 				modificationHappened = true;
 			}
 		}
-	})
+	});
 
 	return modificationHappened;
 }
