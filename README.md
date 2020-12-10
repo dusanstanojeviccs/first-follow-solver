@@ -1,12 +1,10 @@
 # First and Follow set Solver
 
-First and follow set solver in Javascript
+First and follow set solver in Javascript. This library can be used to help you write your Parsers. It is currently being used to auto generate a parser based on the rule set.
 
 # How to add the library to your project?
 
-1. To include the library you can either install it with npm
-
-```npm install first-follow-solver```
+1. To include the library you can either install it with npm ```npm install first-follow-solver```
 
 2. Or you can compile the library by running ```npm run-script build``` and then adding the dist/first-follow-solver.js to your html directly:
 ```<script src="./dist/first-follow-solver.js"></script>```
