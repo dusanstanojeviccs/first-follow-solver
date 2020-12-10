@@ -1,0 +1,29 @@
+{
+  "name": "first-follow-solver",
+  "version": "1.0.0",
+  "description": "First and Follow set solver in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dusanstanojeviccs/first-follow-solver.git"
+  },
+  "keywords": [
+    "first",
+    "follow",
+    "set",
+    "solver",
+    "first-follow",
+    "set",
+    "parser",
+    "lexer"
+  ],
+  "author": "Dusan Stanojevic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dusanstanojeviccs/first-follow-solver/issues"
+  },
+  "homepage": "https://github.com/dusanstanojeviccs/first-follow-solver#readme"
+}
