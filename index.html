@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Import Test Page</title>
+
+	<script src="./dist/first-follow-solver.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+
+		let problem = {
+			rules: [
+				{lhs: "S", rhs: ["a", "b"]}, // S -> a b
+				{lhs: "S", rhs: ["b", "b"]}, // S -> b b
+				{lhs: "S", rhs: ["b"]} //  S -> b
+			],
+			// if not specified all symbols 
+			// not used on the left side will be assumed to be terminals
+			terminals: ["a", "b"], 
+			start: "S", // S is a default value
+			epsilon: "epsilon", // epsilon is the default value
+			eof: "$", // $ is the default value
+		}
+		console.log("Solution", FirstFollowSolver.solve(problem));
+	</script>
+</body>
+</html>
