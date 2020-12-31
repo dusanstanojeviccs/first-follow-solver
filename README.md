@@ -2,9 +2,13 @@
 
 First and follow set solver in Javascript. This library can be used to help you write your Parsers. It is currently being used to auto generate a parser based on the rule set.
 
+# Demo
+
+To see the demo of this library in action check out this [cool tool](https://dusanstanojeviccs.github.io/first-follow-solver/)
+
 # How to add the library to your project?
 
-1. To include the library you can either install it with npm ```npm install first-follow-solver```
+1. Using npm ```npm install first-follow-solver``` followed by ```import { solve } from 'first-follow-solver'```
 
 2. Or you can compile the library by running ```npm run-script build``` and then adding the dist/first-follow-solver.js to your html directly:
 ```<script src="./dist/first-follow-solver.js"></script>```
@@ -25,16 +29,16 @@ let problem = {
 	epsilon: "epsilon", // epsilon is the default value
 	eof: "$", // $ is the default value
 }
+```
 
+If included from the ```first-follow-solver.js``` file:
+```
 console.log("Solution", FirstFollowSolver.solve(problem));
 ```
 
-# Done
-- First implementation of the first and follow set solver
+If included using npm:
+```
+console.log("Solution", solve(problem));
+```
 
-# TODO
-- Add more docs
-- Write more tests
-- Build a demo page
-
-### I have not had the time to write all test cases yet, if you add some use cases feel free to open a PR and email me at dusan.stanojevic.cs@gmail.com
+### Feel free to contact me at email me at dusan.stanojevic.cs@gmail.com
