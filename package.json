@@ -1,6 +1,6 @@
 {
   "name": "first-follow-solver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "First and Follow set solver in JavaScript",
   "main": "src/index.js",
   "scripts": {
