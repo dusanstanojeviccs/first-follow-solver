@@ -4,7 +4,7 @@ First and follow set solver in Javascript. This library can be used to help you 
 
 # Demo
 
-To see the demo of this library in action check out this [cool tool](https://dusanstanojeviccs.github.io/first-follow-solver/)
+To see this library in action check out this [cool tool](https://dusanstanojeviccs.github.io/first-follow-solver/)
 
 # How to add the library to your project?
 
