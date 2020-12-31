@@ -95,8 +95,8 @@ function solveFirstSet(rules, firstSet, terminals, epsilon) {
 				} else {
 					firstSet[rhsElem].forEach(potential => {
 						if (potential != epsilon) {
-							if (!firstSet[rule.rhs].has(potential)) {
-								firstSet[rule.rhs].add(potential);
+							if (!firstSet[rule.lhs].has(potential)) {
+								firstSet[rule.lhs].add(potential);
 								done = false;
 							}
 						}
@@ -155,7 +155,7 @@ function solveFollowSet(rules, firstSet, followSet, terminals, epsilon, start, e
 							}
 						}
 					} else {
-						let modificationHappened = addNext(followSet, firstSet, previousRhsElem, rule.rhs, i);
+						let modificationHappened = addNext(followSet, firstSet, previousRhsElem, rule.rhs, i, epsilon);
 
 						if (modificationHappened) {
 							done = false;
@@ -181,8 +181,8 @@ function solveFollowSet(rules, firstSet, followSet, terminals, epsilon, start, e
 
 				if (allHaveEpsilon) {
 					followSet[rule.lhs].forEach(followSetElem => {
-						if (!followSet[rhsElem].has(firstSetElem)) {
-							followSet[rhsElem].add(firstSetElem);
+						if (!followSet[rhsElem].has(followSetElem)) {
+							followSet[rhsElem].add(followSetElem);
 							done = false;
 						}
 					});
@@ -192,7 +192,7 @@ function solveFollowSet(rules, firstSet, followSet, terminals, epsilon, start, e
 	}
 }
 
-function addNext(followSet, firstSet, key, rhs, i) {
+function addNext(followSet, firstSet, key, rhs, i, epsilon) {
 	if (i == rhs.length) {
 		return;
 	}
@@ -201,7 +201,7 @@ function addNext(followSet, firstSet, key, rhs, i) {
 
 	firstSet[rhs[i]].forEach(elem => {
 		if (elem === epsilon) {
-			modificationHappened = modificationHappened || addNext(followSet, followSet, key, rhs, i + 1);
+			modificationHappened = modificationHappened || addNext(followSet, followSet, key, rhs, i + 1, epsilon);
 		} else {
 			if (!followSet[key].has(elem)) {
 				followSet[key].add(elem);
