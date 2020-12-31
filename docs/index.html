@@ -258,7 +258,7 @@
 			},
 			methods: {
 				solve: function () {
-					let rules = parseProgram(this.enteredValue, this.split);
+					let rules = parseProgram(this.enteredValue.replace("→", "->"), this.split);
 
 					let terminals = new Set();
 
