@@ -85,7 +85,7 @@ function solveFirstSet(rules, firstSet, terminals, epsilon) {
 					return;
 				}
 
-				if (terminals.has(rhsElem)) {
+				if (terminals.has(rhsElem) || epsilon == rhsElem) {
 					if (!firstSet[rule.lhs].has(rhsElem)) {
 						firstSet[rule.lhs].add(rhsElem);
 						done = false;	
@@ -107,6 +107,10 @@ function solveFirstSet(rules, firstSet, terminals, epsilon) {
 					}
 				}
 			});
+
+			if (allEmpty) {
+				firstSet[rule.lhs].add(epsilon);
+			}
 		});
 	}
 }
@@ -155,7 +159,7 @@ function solveFollowSet(rules, firstSet, followSet, terminals, epsilon, start, e
 							}
 						}
 					} else {
-						let modificationHappened = addNext(followSet, firstSet, previousRhsElem, rule.rhs, i, epsilon);
+						let modificationHappened = addNext(followSet, firstSet, previousRhsElem, rule.rhs, i, epsilon, terminals);
 
 						if (modificationHappened) {
 							done = false;
@@ -168,7 +172,7 @@ function solveFollowSet(rules, firstSet, followSet, terminals, epsilon, start, e
 			for (let i = 0; i < rule.rhs.length; i++) {
 				let rhsElem = rule.rhs[i];
 
-				if (terminals.has(rhsElem)) {
+				if (terminals.has(rhsElem) || rhsElem == epsilon) {
 					continue;
 				}
 
@@ -180,6 +184,7 @@ function solveFollowSet(rules, firstSet, followSet, terminals, epsilon, start, e
 				}
 
 				if (allHaveEpsilon) {
+					
 					followSet[rule.lhs].forEach(followSetElem => {
 						if (!followSet[rhsElem].has(followSetElem)) {
 							followSet[rhsElem].add(followSetElem);
@@ -192,16 +197,24 @@ function solveFollowSet(rules, firstSet, followSet, terminals, epsilon, start, e
 	}
 }
 
-function addNext(followSet, firstSet, key, rhs, i, epsilon) {
+function addNext(followSet, firstSet, key, rhs, i, epsilon, terminals) {
 	if (i == rhs.length) {
 		return;
 	}
 
 	let modificationHappened = false;
 
+	if (terminals.has(rhs[i])) {
+		if (!followSet[key].has(rhs[i])) {
+			followSet[key].add(rhs[i]);
+			return true;
+		}
+		return false;
+	}
+
 	firstSet[rhs[i]].forEach(elem => {
 		if (elem === epsilon) {
-			modificationHappened = modificationHappened || addNext(followSet, followSet, key, rhs, i + 1, epsilon);
+			modificationHappened = modificationHappened || addNext(followSet, followSet, key, rhs, i + 1, epsilon, terminals);
 		} else {
 			if (!followSet[key].has(elem)) {
 				followSet[key].add(elem);

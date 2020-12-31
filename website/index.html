@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Import Test Page</title>
+
+	<script src="../dist/first-follow-solver.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
+	<link rel="icon" type="image/png" href="./assets/img/favicon.png">
+	<title>
+		First and Follow set Solver
+	</title>
+	<!--		 Fonts and icons		 -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+	<!-- Nucleo Icons -->
+	<link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
+	<link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
+	<!-- Font Awesome Icons -->
+	<link href="./assets/css/font-awesome.css" rel="stylesheet" />
+	<link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
+	<!-- CSS Files -->
+	<link href="./assets/css/argon-design-system.css?v=1.2.2" rel="stylesheet" />
+
+	<style type="text/css">
+		.section.section-hero.section-shaped {
+			margin-top: -440px;
+		}
+		.form-control {
+			color: #32325d !important;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="section section-hero section-shaped">
+			<div class="shape shape-style-3 shape-default">
+				<span class="span-150"></span>
+				<span class="span-50"></span>
+				<span class="span-50"></span>
+				<span class="span-75"></span>
+				<span class="span-100"></span>
+				<span class="span-75"></span>
+				<span class="span-50"></span>
+				<span class="span-100"></span>
+				<span class="span-50"></span>
+				<span class="span-100"></span>
+			</div>
+			
+			<div class="separator separator-bottom separator-skew zindex-100">
+				<svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<polygon class="fill-white" points="2560 0 2560 100 0 100"></polygon>
+				</svg>
+			</div>
+		</div>
+		<div class="section features-6 pt-3">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 mx-auto text-center">
+						<h3 class="display-3">First and Follow set Solver</h3>
+						<p class="lead">Test the First and Follow set library from the comfort of your browser!</p>
+					</div>
+				</div>
+
+				<div class="row align-items-center">
+					<div class="col-lg-12">
+						<div class="info info-horizontal info-hover-primary">
+							<div class="description text-center">
+								<span>Enter your problem</span> <span class="fa ml-3 mr-3 fa-arrow-right"></span>
+								<span>Click solve</span> <span class="fa ml-3 mr-3 fa-arrow-right"></span>
+								<span>Checkout the Results</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="app" class="mt-6">
+
+					<div class="row">
+						<div class="col-12">
+							<textarea v-model="enteredValue" class="form-control"  oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' rows="10" style="resize: none;">
+							</textarea>
+						</div>
+					</div>
+
+
+					<div class="row mt-4">
+						<div class="col-lg-3 col-md-12">
+							<div class="form-group">
+								<label>Epsilon Symbol</label>
+								<input type="text" v-model="epsilon" class="form-control">
+							</div>
+						</div>
+
+						<div class="col-lg-3 col-md-12">
+							<div class="form-group">
+								<label>End of File</label>
+								<input type="text" v-model="eof" class="form-control">
+							</div>
+						</div>
+
+						<div class="col-lg-3 col-md-12">
+							<div class="form-group">
+								<label>Start Symbol</label>
+								<input type="text" v-model="start" class="form-control">
+							</div>
+						</div>
+
+						<div class="col-lg-3 col-md-12">
+							<div class="form-group">
+								<label>Split Symbol</label>
+								<input type="text" v-model="split" class="form-control">
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-3 col-md-12">
+							<button v-on:click="solve" class="btn btn-info btn-block">Solve</button>
+						</div>
+					</div>
+
+					<div>
+						<div v-for="line in firstSetToShow">
+							<div>{{ line.key }}</div>
+
+							<div v-for="value in line.values">
+								| {{value}}
+							</div>
+						</div>
+					</div>
+
+					<div>
+						<div v-for="line in followSetToShow">
+							<div>{{ line.key }}</div>
+
+							<div v-for="value in line.values">
+								| {{value}}
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<br /><br />
+		<footer class="footer">
+			<div class="container">
+				<div class="row row-grid align-items-center mb-5">
+					<div class="col-lg-6">
+						<h3 class="text-primary font-weight-light mb-2">Thank you for supporting my project!</h3>
+						<h4 class="mb-0 font-weight-light">Let's get in touch on any of these platforms.</h4>
+					</div>
+					<div class="col-lg-6 text-lg-center btn-wrapper">
+						<button target="_blank" href="https://www.linkedin.com/in/dusanstanojeviccs" rel="nofollow" class="btn btn-icon-only btn-dribbble rounded-circle" data-toggle="tooltip" data-original-title="Add me on">
+							<span class="btn-inner--icon"><i class="fa fa-linkedin"></i></span>
+						</button>
+						<button target="_blank" href="https://github.com/dusanstanojeviccs/first-follow-solver" rel="nofollow" class="btn btn-icon-only btn-github rounded-circle" data-toggle="tooltip" data-original-title="Star on Github">
+							<span class="btn-inner--icon"><i class="fa fa-github"></i></span>
+						</button>
+					</div>
+				</div>
+				<hr>
+				<div class="row align-items-center justify-content-md-between">
+					<div class="col-md-12">
+						<div class="copyright">
+							&copy; 2020 <a href="" target="_blank">Dusan Stanojevic</a>.
+						</div>
+					</div>
+			</div>
+		</footer>
+	</div>
+
+	<script type="text/javascript">
+
+		function prepareToShow(obj) {
+			let arr = [];
+
+			for (let key in obj) {
+				arr.push({
+					key: key,
+					values: obj[key]
+				});
+			}
+
+			return arr;
+		}
+
+		function parseProgram(text, split) {
+			let lines = text.split("\n");
+			let rules = [];
+
+			for (let i = 0; i < lines.length; i++) {
+				let line = lines[i].trim();
+
+				let parts = line.split("->");
+
+				if (parts.length == 2) {
+					let lhs = parts[0].trim();
+
+					let rhsSides = parts[1].trim().split(split, -1);
+
+					for (let j = 0; j < rhsSides.length; j++) {
+						let rhs = rhsSides[j].trim().split(" ");
+
+						rules.push({lhs: lhs, rhs: rhs});
+					}
+				}
+			}
+
+			return rules;
+		}
+
+
+		var app = new Vue({
+			el: "#app",
+			data: {
+				enteredValue: 
+					"S -> a B D h\n" +
+					"B -> c C\n" +
+					"C -> b C\n" +
+					"D -> E F\n" +
+					"E -> g | epsilon\n" +
+					"F -> f | epsilon\n",
+
+				mode: "lowercase",
+				epsilon: "epsilon",
+				eof: "$",
+				start: "S",
+				split: "|",
+
+				firstSet: {},
+				followSet: {},
+				
+				firstSetToShow: [],
+				followSetToShow: [],
+			},
+			methods: {
+				solve: function () {
+					let rules = parseProgram(this.enteredValue, this.split);
+
+					let terminals = new Set();
+
+					if (this.mode == "lowercase") {
+						for (let i = 0; i < rules.length; i++) {
+							let rhs = rules[i].rhs;
+
+							for (let j = 0; j < rhs.length; j++) {
+								if (rhs[j] != this.epsilon && rhs[j].toUpperCase() != rhs[j]) {
+									// the element is not uppercase and we're in lowercase mode
+									// thus this is a terminal
+									
+									terminals.add(rhs[j]);
+								}
+							}
+						}
+					} else {
+						// mode is not lowercase
+						// thus everything not on the left side is a terminal
+
+						let nonTerminals = new Set();
+						for (let i = 0; i < rules.length; i++) {
+							nonTerminals.add(rules[i].lhs);
+						}
+
+						// now we add all that are not on the left side to the terminals
+						for (let i = 0; i < rules.length; i++) {
+							let rhs = rules[i].rhs;
+							for (let j = 0; j < rhs.length; j++) {
+								if (!nonTerminals.has(rhs[j])) {
+									terminals.add(rhs[j]);
+								}
+							}
+						}
+					}
+
+					terminals = Array.from(terminals); // we convert the set to an array
+
+					let problem = {
+						rules: rules,
+						terminals: terminals,
+						start: this.start,
+						epsilon: this.epsilon,
+						eof: this.eof
+					};
+
+					this.terminals = terminals;
+
+					let solution = FirstFollowSolver.solve(problem);
+
+					this.firstSet = solution.firstSet;
+					this.followSet = solution.followSet;
+
+					this.firstSetToShow = prepareToShow(this.firstSet);
+					this.followSetToShow = prepareToShow(this.followSet);
+				}
+			}
+		});
+	</script>
+
+
+	<script src="./assets/js/core/jquery.min.js" type="text/javascript"></script>
+	<script src="./assets/js/core/popper.min.js" type="text/javascript"></script>
+	<script src="./assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+	<script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+	<script src="./assets/js/plugins/bootstrap-switch.js"></script>
+	<script src="./assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+	<script src="./assets/js/plugins/moment.min.js"></script>
+	<script src="./assets/js/plugins/datetimepicker.js" type="text/javascript"></script>
+	<script src="./assets/js/plugins/bootstrap-datepicker.min.js"></script>
+	<script src="./assets/js/argon-design-system.min.js?v=1.2.2" type="text/javascript"></script>
+</body>
+</html>
