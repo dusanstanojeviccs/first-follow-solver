@@ -52,7 +52,7 @@ parseProgram(text, split)
 
 ## solve (method)
 #### Parameters
-	-   `config` **[Object][19]** args
+-   `config` **[Object][19]** args
 		-   `config.rules` an array of rules
 				-    `config.rules.0.lhs` an object representing the head of the rule (left hand side)
 				-    `config.rules.0.rhs` an array of strings representing the right hand side symbols
@@ -84,14 +84,14 @@ console.log("Solution", FirstFollowSolver.solve(problem));
 ## validateSymbols (method)
 
 #### Parameters
-	-   `rules` an array of rules
+-   `rules` an array of rules
 			-    `rules.0.lhs` an object representing the head of the rule (left hand side)
 			-    `rules.0.rhs` an array of strings representing the right hand side symbols
-	-   `terminals` an array of strings, each string is a terminal
-	-   `epsilon` string that represents the epsilon symbol
+-   `terminals` an array of strings, each string is a terminal
+-   `epsilon` string that represents the epsilon symbol
 
 #### Exceptions
-	- Throws an exception that is a string containing the error if either one of the rules is broken
+- Throws an exception that is a string containing the error if either one of the rules is broken
 ```
 terminals cannot be on the left hand side
 ```
@@ -114,13 +114,13 @@ FirstFollowSolver.validateSymbols(rules, terminals, epsilon);
 ```
 ## extractTerminals (method)
 #### Parameters
-	-   `rules` an array of rules
+-   `rules` an array of rules
 			-    `rules.0.lhs` an object representing the head of the rule (left hand side)
 			-    `rules.0.rhs` an array of strings representing the right hand side symbols
-	-   `mode` a string that represents how the values are to be extracted
+-   `mode` a string that represents how the values are to be extracted
 			-   "lowercase" symbols are extracted as terminals if they contain a lowercase char
 			-   "notLhs" symbols are extracted as terminals if they are not rule heads (left hand side)
-	-   `epsilon` string that represents the epsilon symbol
+-   `epsilon` string that represents the epsilon symbol
 #### Examples
 ```javascript
 let rules = [
@@ -137,8 +137,8 @@ console.log("Terminals", FirstFollowSolver.extractTerminals(rules, mode, epsilon
 
 ## parseProgram (method)
 #### Parameters 
-	-   `text`
-	-   `split`
+-   `text` the full program defined as a string, rules are separated into new lines
+-   `split` the string used to separate mutliple single line rules. Example ```S -> A | B```
 
 #### Examples
 ```javascript
