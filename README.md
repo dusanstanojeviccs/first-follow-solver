@@ -52,7 +52,7 @@ parseProgram(text, split)
 
 ## solve (method)
 #### Parameters
--   `config` **[Object][19]** args
+-   `config`
     -   `config.rules` an array of rules
         -    `config.rules.0.lhs` an object representing the head of the rule (left hand side)
         -    `config.rules.0.rhs` an array of strings representing the right hand side symbols
