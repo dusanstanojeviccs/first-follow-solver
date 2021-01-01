@@ -39,6 +39,9 @@
 			padding: 2px 7px 5px 7px;
 			margin-left: 5px;
 		}
+		.alert.alert-danger {
+			background-color: #f5345a;
+		}
 	</style>
 </head>
 <body>
@@ -93,8 +96,25 @@
 						</div>
 					</div>
 
+					<div class="row mt-4 text-center">
+						<div class="col-12">
+							<span class="custom-radio mb-3 mr-4">
+								<input class="custom-control-input" id="lowercaseRadio" value="lowercase" type="radio" v-model="mode">
+								<label class="custom-control-label" for="lowercaseRadio">
+									<span>Terminals contain lowercase</span>
+								</label>
+							</span>
 
-					<div class="row mt-4">
+							<span class="custom-radio mb-3 ml-4">
+								<input class="custom-control-input" id="notOnTheLeft" value="notInHead" type="radio" v-model="mode">
+								<label class="custom-control-label" for="notOnTheLeft">
+									<span>Terminals are not on the Left</span>
+								</label>
+							</span>
+						</div>
+					</div>
+
+					<div class="row mt-3">
 						<div class="col-lg-3 col-md-12">
 							<div class="form-group">
 								<label>Epsilon Symbol</label>
@@ -130,33 +150,39 @@
 						</div>
 					</div>
 
-					<div class="card mt-4" v-if="terminals.length">
-						<div class="card-body">
-							<h4>Terminals</h4>
-							<span v-for="value in terminals" class="symbol">{{value}}</span>
-						</div>
+					<div class="mt-4 alert alert-danger" v-if="error.length">
+						{{error}}
 					</div>
 
-					<div class="card mt-4" v-if="firstSetToShow.length">
-						<div class="card-body">
-							<h4>First Set</h4>
-
-							<div v-for="line in firstSetToShow" class="mb-2">
-								<h5 class="d-inline">{{line.key}}</h5>
-
-								<span v-for="value in line.values" class="symbol">{{value}}</span>
+					<div v-else>
+						<div class="card mt-4" v-if="terminals.length">
+							<div class="card-body">
+								<h4>Terminals</h4>
+								<span v-for="value in terminals" class="symbol">{{value}}</span>
 							</div>
 						</div>
-					</div>
 
-					<div class="card mt-4" v-if="followSetToShow.length">
-						<div class="card-body">
-							<h4>Follow Set</h4>
+						<div class="card mt-4" v-if="firstSetToShow.length">
+							<div class="card-body">
+								<h4>First Set</h4>
 
-							<div v-for="line in followSetToShow" class="mb-2">
-								<h5 class="d-inline">{{line.key}}</h5>
+								<div v-for="line in firstSetToShow" class="mb-2">
+									<h5 class="d-inline">{{line.key}}</h5>
 
-								<span v-for="value in line.values" class="symbol">{{value}}</span>
+									<span v-for="value in line.values" class="symbol">{{value}}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="card mt-4" v-if="followSetToShow.length">
+							<div class="card-body">
+								<h4>Follow Set</h4>
+
+								<div v-for="line in followSetToShow" class="mb-2">
+									<h5 class="d-inline">{{line.key}}</h5>
+
+									<span v-for="value in line.values" class="symbol">{{value}}</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -207,35 +233,10 @@
 			return arr;
 		}
 
-		function parseProgram(text, split) {
-			let lines = text.split("\n");
-			let rules = [];
-
-			for (let i = 0; i < lines.length; i++) {
-				let line = lines[i].trim();
-
-				let parts = line.split("->");
-
-				if (parts.length == 2) {
-					let lhs = parts[0].trim();
-
-					let rhsSides = parts[1].trim().split(split, -1);
-
-					for (let j = 0; j < rhsSides.length; j++) {
-						let rhs = rhsSides[j].trim().split(" ");
-
-						rules.push({lhs: lhs, rhs: rhs});
-					}
-				}
-			}
-
-			return rules;
-		}
-
-
 		var app = new Vue({
 			el: "#app",
 			data: {
+				error: "",
 				enteredValue: 
 					"S -> a B D h\n" +
 					"B -> c C\n" +
@@ -258,62 +259,41 @@
 			},
 			methods: {
 				solve: function () {
-					let rules = parseProgram(this.enteredValue.replace("→", "->"), this.split);
+					this.error = "";
 
-					let terminals = new Set();
+					try {
+						let rules = FirstFollowSolver.parseProgram(this.enteredValue, this.split);
 
-					if (this.mode == "lowercase") {
-						for (let i = 0; i < rules.length; i++) {
-							let rhs = rules[i].rhs;
+						let terminals = FirstFollowSolver.extractTerminals(rules, this.mode, this.epsilon);
 
-							for (let j = 0; j < rhs.length; j++) {
-								if (rhs[j] != this.epsilon && rhs[j].toUpperCase() != rhs[j]) {
-									// the element is not uppercase and we're in lowercase mode
-									// thus this is a terminal
-									
-									terminals.add(rhs[j]);
-								}
-							}
-						}
-					} else {
-						// mode is not lowercase
-						// thus everything not on the left side is a terminal
+						FirstFollowSolver.validateSymbols(rules, terminals, this.epsilon);
 
-						let nonTerminals = new Set();
-						for (let i = 0; i < rules.length; i++) {
-							nonTerminals.add(rules[i].lhs);
-						}
+						let problem = {
+							rules: rules,
+							terminals: terminals,
+							start: this.start,
+							epsilon: this.epsilon,
+							eof: this.eof
+						};
 
-						// now we add all that are not on the left side to the terminals
-						for (let i = 0; i < rules.length; i++) {
-							let rhs = rules[i].rhs;
-							for (let j = 0; j < rhs.length; j++) {
-								if (!nonTerminals.has(rhs[j])) {
-									terminals.add(rhs[j]);
-								}
-							}
+						this.terminals = terminals;
+
+						let solution = FirstFollowSolver.solve(problem);
+
+						this.firstSet = solution.firstSet;
+						this.followSet = solution.followSet;
+
+						this.firstSetToShow = prepareToShow(this.firstSet);
+						this.followSetToShow = prepareToShow(this.followSet);
+					} catch (e) {
+						if (typeof e === 'string' || e instanceof String) {
+							this.error = e;
+						} else {
+							this.error = "An unexpected error has occured. If you'd like me to help you figure out what happened email me at dusan.stanojevic.cs@gmail.com with your program/grammar";
+
+							console.error(e);
 						}
 					}
-
-					terminals = Array.from(terminals); // we convert the set to an array
-
-					let problem = {
-						rules: rules,
-						terminals: terminals,
-						start: this.start,
-						epsilon: this.epsilon,
-						eof: this.eof
-					};
-
-					this.terminals = terminals;
-
-					let solution = FirstFollowSolver.solve(problem);
-
-					this.firstSet = solution.firstSet;
-					this.followSet = solution.followSet;
-
-					this.firstSetToShow = prepareToShow(this.firstSet);
-					this.followSetToShow = prepareToShow(this.followSet);
 				}
 			}
 		});

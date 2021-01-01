@@ -254,3 +254,134 @@ export function solve(config) {
 
 	return {firstSet, followSet};
 }
+
+export function validateSymbols(rules, terminals, epsilon) {
+	// terminals cannot be on the left hand side
+	for (let i = 0; i < terminals.length; i++) {
+		let terminal = terminals[i];
+
+		for (let j = 0; j < rules.length; j++) {
+			if (rules[j].lhs == terminal) {
+				throw `Terminal '${terminal}' is used on the left side (head) of a rule`;
+			}
+		}
+	}
+	// non terminals must be on the left hand side
+	let nonTerminals = new Set();
+	for (let j = 0; j < rules.length; j++) {
+		let rhs = rules[j].rhs;
+
+		for (let i = 0; i < rhs.length; i++) {
+			if (terminals.indexOf(rhs[i]) < 0 && rhs[i] != epsilon) {
+				nonTerminals.add(rhs[i]);
+			}
+		}
+	}
+
+	nonTerminals = Array.from(nonTerminals);
+	for (let i = 0; i < nonTerminals.length; i++) {
+		let used = false;
+
+		for (let j = 0; j < rules.length; j++) {
+			if (rules[j].lhs == nonTerminals[i]) {
+				used = true;
+				break;
+			}
+		}
+
+		if (!used) {
+			throw `Non Terminal '${nonTerminals[i]}' was not used on the left side (head) of a single rule`;
+		}
+	}
+
+}
+
+export function extractTerminals(rules, mode, epsilon) {
+	let terminals = new Set();
+	if (mode == "lowercase") {
+		for (let i = 0; i < rules.length; i++) {
+			let rhs = rules[i].rhs;
+
+			for (let j = 0; j < rhs.length; j++) {
+				if (rhs[j] != epsilon && rhs[j].toUpperCase() != rhs[j]) {
+					// the element is not uppercase and we're in lowercase mode
+					// thus this is a terminal
+					
+					terminals.add(rhs[j]);
+				}
+			}
+		}
+	} else {
+		// mode is not lowercase
+		// thus everything not on the left side is a terminal
+
+		let nonTerminals = new Set();
+		for (let i = 0; i < rules.length; i++) {
+			nonTerminals.add(rules[i].lhs);
+		}
+
+		// now we add all that are not on the left side to the terminals
+		for (let i = 0; i < rules.length; i++) {
+			let rhs = rules[i].rhs;
+			for (let j = 0; j < rhs.length; j++) {
+				if (!nonTerminals.has(rhs[j]) && rhs[j] != epsilon) {
+					terminals.add(rhs[j]);
+				}
+			}
+		}
+	}
+
+	return Array.from(terminals); // we convert the set to an array
+}
+
+export function parseProgram(text, split) {
+	text = text.replace("→", "->");
+
+	let lines = text.split("\n");
+	let rules = [];
+
+	for (let i = 0; i < lines.length; i++) {
+		let line = lines[i].trim();
+
+		if (line == "") {
+			continue;
+		}
+
+		let parts = line.split("->");
+
+		if (parts.length == 2) {
+			let lhs = parts[0].trim();
+			if (lhs.length == 0) {
+				throw `Line ${i + 1} contains no symbols on the left hand side (head) of the rule`;
+			}
+
+			let rhsSides = parts[1].trim().split(split, -1);
+
+			if (parts[1].trim() == "" || rhsSides.length == 0) {
+				throw `Line ${i + 1} contains no symbols on the right hand side of the rule`;
+			}
+
+			for (let j = 0; j < rhsSides.length; j++) {
+				let rhs = [];
+
+				let arr = rhsSides[j].trim().split(" ");
+				for (let k = 0; k < arr.length; k++) {
+					if (arr[k]) {
+						rhs.push(arr[k]);
+					}
+				}
+
+				if (rhs.length == 0) {
+					throw `Line ${i + 1} contains no symbols on the right hand side of the rule in the part at index ${j}`;
+				}
+				rules.push({lhs: lhs, rhs: rhs});
+			}
+		} else if (parts.length > 2) {
+			throw `Line ${i + 1} contains more than two '->'`;
+		} else {
+			throw `Line ${i + 1} contains no '->'`;
+		}
+	}
+
+	return rules;
+}
