@@ -115,8 +115,8 @@ FirstFollowSolver.validateSymbols(rules, terminals, epsilon);
 ## extractTerminals (method)
 #### Parameters
 -   `rules` an array of rules
-			-    `rules.0.lhs` an object representing the head of the rule (left hand side)
-			-    `rules.0.rhs` an array of strings representing the right hand side symbols
+  -    `rules.0.lhs` an object representing the head of the rule (left hand side)
+	-    `rules.0.rhs` an array of strings representing the right hand side symbols
 -   `mode` a string that represents how the values are to be extracted
 			-   "lowercase" symbols are extracted as terminals if they contain a lowercase char
 			-   "notLhs" symbols are extracted as terminals if they are not rule heads (left hand side)
