@@ -58,6 +58,8 @@
 			background: #fcd371c2;
 			padding: 2px 7px 5px 7px;
 			margin-left: 5px;
+			margin-bottom: 4px;
+			vertical-align: middle;
 		}
 		.alert.alert-danger {
 			background-color: #f5345a;
@@ -181,7 +183,7 @@
 						<div class="card mt-4" v-if="terminals.length">
 							<div class="card-body">
 								<h4>Terminals</h4>
-								<span v-for="value in terminals" class="symbol">{{value}}</span>
+								<div v-for="value in terminals" class="symbol d-inline-block">{{value}}</div>
 							</div>
 						</div>
 
@@ -192,7 +194,7 @@
 								<div v-for="line in firstSetToShow" class="mb-2">
 									<h5 class="d-inline">{{line.key}}</h5>
 
-									<span v-for="value in line.values" class="symbol">{{value}}</span>
+									<div v-for="value in line.values" class="symbol d-inline-block">{{value}}</div>
 								</div>
 							</div>
 						</div>
@@ -204,7 +206,7 @@
 								<div v-for="line in followSetToShow" class="mb-2">
 									<h5 class="d-inline">{{line.key}}</h5>
 
-									<span v-for="value in line.values" class="symbol">{{value}}</span>
+									<div v-for="value in line.values" class="symbol d-inline-block">{{value}}</div>
 								</div>
 							</div>
 						</div>
