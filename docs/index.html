@@ -314,7 +314,22 @@
 
 						let terminals = FirstFollowSolver.extractTerminals(rules, this.mode, this.epsilon);
 
-						FirstFollowSolver.validateSymbols(rules, terminals, this.epsilon);
+						let nonTerminals = FirstFollowSolver.validateSymbols(rules, terminals, this.epsilon);
+
+						if (!this.start) {
+							this.error = "Start symbol must be entered";
+							return;
+						}
+
+						if (nonTerminals.indexOf(this.start) < 0) {
+							this.error = "Start symbol must be a non-terminal";
+							return;
+						}
+
+						if (!this.epsilon) {
+							this.error = "Epsilon symbol must be entered";
+							return;
+						}
 
 						let problem = {
 							rules: rules,

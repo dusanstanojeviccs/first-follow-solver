@@ -269,6 +269,7 @@ export function validateSymbols(rules, terminals, epsilon) {
 	// non terminals must be on the left hand side
 	let nonTerminals = new Set();
 	for (let j = 0; j < rules.length; j++) {
+		nonTerminals.add(rules[j].lhs);
 		let rhs = rules[j].rhs;
 
 		for (let i = 0; i < rhs.length; i++) {
@@ -294,6 +295,7 @@ export function validateSymbols(rules, terminals, epsilon) {
 		}
 	}
 
+	return nonTerminals;
 }
 
 export function extractTerminals(rules, mode, epsilon) {
